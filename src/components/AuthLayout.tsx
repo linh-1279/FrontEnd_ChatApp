@@ -1,6 +1,7 @@
+import type { ReactNode } from "react";
 import "../style/auth.css";
 
-function AuthLayout({ children }) {
+function AuthLayout({ children }: { children: ReactNode }) {
     return (
         <div className="auth-container">
             <div className="auth-left">
