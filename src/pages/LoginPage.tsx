@@ -43,13 +43,22 @@ function LoginPage() {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Password</label>
+                        <label>Mật Khẩu</label>
                         <PasswordInput
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Nhập mật khẩu"
                         />
                     </div>
+
+                    {/* <div className="form-group">
+                        <label>Xác nhận mật khẩu</label>
+                        <PasswordInput
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            placeholder="Nhập lại mật khẩu"
+                        />
+                    </div> */}
 
                     {error && <p className="error-message">{error}</p>}
 
