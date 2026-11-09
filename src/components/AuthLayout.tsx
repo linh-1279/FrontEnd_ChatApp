@@ -1,6 +1,7 @@
+import type { ReactNode } from "react";
 import "../style/auth.css";
 
-function AuthLayout({ children }) {
+function AuthLayout({ children }: { children: ReactNode }) {
     return (
         <div className="auth-container">
             <div className="auth-left">
@@ -14,7 +15,7 @@ function AuthLayout({ children }) {
                     <p>Đăng nhập để kết nối với bạn bè của bạn</p>
                 </div>
 
-                <p className="auth-footer">© 2023 ChatApp. All rights reserved.</p>
+                <p className="auth-footer">© 2026 ChatApp. All rights reserved.</p>
             </div>
             <div className="auth-right">
                 {children}

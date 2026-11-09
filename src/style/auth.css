@@ -158,6 +158,23 @@
     margin-bottom: 12px;
 }
 
+/* Chat */
+.chat-card{
+    width: fit-content;
+    padding: 18px 22px;
+    border-radius: 15px;
+    background: white;
+    color: #334155;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.chat-card-right{
+    background: #dbeafe;
+    align-self: flex-end;
+}
+
+
+
 @media (max-width: 768px){
     .auth-right{
         width: 100%;
