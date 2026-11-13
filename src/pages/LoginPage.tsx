@@ -1,23 +1,24 @@
 
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react'
+import type { FormEvent } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 
-import { useAppDispatch } from '../app/hooks';
-import { login } from '../features/auth/authSlice';
+import { useAppDispatch } from '../app/hooks'
+import { login } from '../features/auth/authSlice'
 
-import AuthLayout from '../components/AuthLayout';
-import PasswordInput from '../components/PasswordInput';
+import AuthLayout from '../components/AuthLayout'
+import PasswordInput from '../components/PasswordInput'
 
 function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
 
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
+    const navigate = useNavigate()
+    const dispatch = useAppDispatch()
 
     // Xử lý khi người dùng nhấn nút đăng nhập
-    function handleLogin(e) {
+    function handleLogin(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
 
         if (email.trim() === '' || password.trim() === '') {
@@ -54,7 +55,8 @@ function LoginPage() {
                     </div>
 
                     <div className="form-group">
-                        <label>Mật khẩu</label>
+                        <label htmlFor="password">Password</label>
+
                         <PasswordInput
                             name="password"
                             value={password}
