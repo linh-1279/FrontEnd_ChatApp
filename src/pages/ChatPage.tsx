@@ -1,15 +1,30 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
 
 import ChatWindow from '../features/messages/components/ChatWindow'
 import { mockPeopleMessages } from '../features/messages/mockMessages'
 import type { ChatMessage } from '../features/messages/messageTypes'
 
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import {
+    addMessage,
+    setMessages
+} from '../features/messages/messageSlice'
+
 import '../features/messages/messages.css'
 
 function ChatPage() {
-    const [messages, setMessages] =
-        useState<ChatMessage[]>(mockPeopleMessages)
+    const dispatch = useAppDispatch()
 
+    const messages = useAppSelector(
+        (state) => state.messages.messages
+    )
+
+    // Nạp dữ liệu tin nhắn mẫu ban đầu
+    useEffect(() => {
+        dispatch(setMessages(mockPeopleMessages))
+    }, [dispatch])
+
+    // Xử lý khi gửi tin nhắn
     const handleSendMessage = (content: string) => {
         const now = new Date()
 
@@ -27,10 +42,7 @@ function ChatPage() {
             type: 0
         }
 
-        setMessages((previousMessages) => [
-            ...previousMessages,
-            newMessage
-        ])
+        dispatch(addMessage(newMessage))
     }
 
     return (
