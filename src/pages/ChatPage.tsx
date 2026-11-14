@@ -1,72 +1,47 @@
-// import MessageList from '../features/messages/components/MessageList'
-// import { mockPeopleMessages } from '../features/messages/mockMessages'
-// import '../features/messages/messages.css'
+import { useState } from 'react'
 
-// function ChatPage() {
-//     return (
-//         <div className="chat-preview">
-//             <header className="chat-preview__header">
-//                 <h2>Trò chuyện với Ti</h2>
-//             </header>
-
-//             <MessageList
-//                 messages={mockPeopleMessages}
-//                 currentUserName="long"
-//             />
-//         </div>
-//     )
-// }
-
-// export default ChatPage
-// import ChatWindow from '../features/messages/components/ChatWindow'
-// import { mockPeopleMessages } from '../features/messages/mockMessages'
-// import '../features/messages/messages.css'
-
-// function ChatPage() {
-//     return (
-//         <main className="chat-page">
-//             <ChatWindow
-//                 messages={mockPeopleMessages}
-//                 currentUserName="long"
-//                 conversationName="Ti"
-//             />
-//         </main>
-//     )
-// }
-
-// export default ChatPage
-// import ChatWindow from '../features/messages/components/ChatWindow'
-// import { mockPeopleMessages } from '../features/messages/mockMessages'
-// import '../features/messages/messages.css'
-
-// function ChatPage() {
-//     return (
-//         <main className="chat-page">
-//             <ChatWindow
-//                 messages={mockPeopleMessages}
-//                 currentUserName="long"
-//                 conversationName="Ti"
-//             />
-//         </main>
-//     )
-// }
-
-// export default ChatPage
 import ChatWindow from '../features/messages/components/ChatWindow'
 import { mockPeopleMessages } from '../features/messages/mockMessages'
+import type { ChatMessage } from '../features/messages/messageTypes'
+
 import '../features/messages/messages.css'
 
 function ChatPage() {
+    const [messages, setMessages] =
+        useState<ChatMessage[]>(mockPeopleMessages)
+
+    const handleSendMessage = (content: string) => {
+        const now = new Date()
+
+        const pad = (value: number) =>
+            String(value).padStart(2, '0')
+
+        const newMessage: ChatMessage = {
+            id: Date.now(),
+            name: 'long',
+            to: 'ti',
+            mes: content,
+            createAt:
+                `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ` +
+                `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`,
+            type: 0
+        }
+
+        setMessages((previousMessages) => [
+            ...previousMessages,
+            newMessage
+        ])
+    }
+
     return (
         <main className="chat-layout">
-            {/* Khu vực để dành cho thành viên khác */}
             <aside className="chat-layout__reserved"></aside>
 
-            {/* Khu vực mình phụ trách */}
             <ChatWindow
-                messages={mockPeopleMessages}
+                messages={messages}
                 currentUserName="long"
                 conversationName="Ti"
+                onSendMessage={handleSendMessage}
             />
         </main>
     )

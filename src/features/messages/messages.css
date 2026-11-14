@@ -45,15 +45,12 @@
     font-size: 11px;
     text-align: right;
 }
-/* .chat-page {
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-} */
+
 /* Bố cục tổng thể của ứng dụng Chat */
 .chat-layout {
     display: grid;
     grid-template-columns: 409px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
     width: 100%;
     height: 100vh;
     overflow: hidden;
@@ -72,6 +69,8 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
+    min-height: 0;
+    overflow: hidden;
     background: #e9ebef;
 }
 
@@ -80,9 +79,70 @@
     flex-shrink: 0;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 0 20px;
     background: #ffffff;
     border-bottom: 1px solid #e5e7eb;
+    box-sizing: border-box;
+}
+
+.chat-window__user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.chat-window__user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.chat-window__user-info h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #172b4d;
+}
+
+.chat-window__user-info span {
+    font-size: 12px;
+    color: #8993a4;
+}
+
+.chat-window__avatar {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #dce8f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #24558c;
+    font-weight: 600;
+}
+
+.chat-window__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chat-window__actions button {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #536477;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.chat-window__actions button:hover {
+    background: #f0f2f5;
 }
 
 .chat-window__user {
@@ -110,22 +170,28 @@
 }
 
 .chat-window__history {
-    flex: 1;
+    flex: 1 1 0;
     min-height: 0;
     overflow-y: auto;
     padding: 20px 24px;
     background: #e9ebef;
 }
 
+/* Khu vực nhập tin nhắn */
 .chat-window__composer {
-    height: 91px;
-    flex-shrink: 0;
+    height: 100px;
+    flex: 0 0 100px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
     background: #ffffff;
     border-top: 1px solid #e1e4e8;
 }
 
+/* Thanh công cụ */
 .chat-window__toolbar {
     height: 40px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -139,14 +205,48 @@
     cursor: pointer;
 }
 
+/* Hàng nhập nội dung và nút gửi */
+.chat-window__input-row {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 16px 8px;
+    box-sizing: border-box;
+}
+
+/* Ô nhập nội dung */
 .chat-window__composer textarea {
-    width: 100%;
-    height: 45px;
-    padding: 8px 16px;
+    flex: 1;
+    min-width: 0;
+    width: 0;
+    height: 40px;
+    padding: 8px 0;
     box-sizing: border-box;
     border: none;
     outline: none;
     resize: none;
+    overflow-y: hidden;
     font: inherit;
     font-size: 14px;
+}
+
+/* Nút gửi */
+.chat-window__send-button {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background: #d9ebff;
+    color: #24558c;
+    cursor: pointer;
+}
+
+.chat-window__send-button:hover {
+    background: #c5dcf8;
+}
+.chat-window__actions button,
+.chat-window__toolbar button {
+    font-family: "Segoe UI Symbol", "Segoe UI", Arial, sans-serif;
 }
