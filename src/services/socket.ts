@@ -1,14 +1,20 @@
 const WS_URL= 'ws://chat.longapp.io.vn/chat/chat';
 
+export type WebSocketResponse={
+    event?: string
+    [key: string]: unknown
+}
 let socket: WebSocket | null = null;
 
-let pendingRequest: {
-    [level:String]: {
-        resolve: (value: any) => void;
+type PendingRequest= {
+        resolve: (value: WebSocketResponse) => void;
         reject: (reason: Error) => void;
         timer: ReturnType<typeof setTimeout>;
-    };
-} = {};
+    }
+
+let pendingRequest: {
+    [event:string]: PendingRequest} = {}
+
 
 // Tạo kết nối với webSocket
 function connectSocket(): Promise<WebSocket> {
@@ -19,61 +25,63 @@ function connectSocket(): Promise<WebSocket> {
         }
 
         if (socket && socket.readyState === WebSocket.CONNECTING) {
-            socket.addEventListener('open', () => {
-            if(socket){
-                resolve(socket);
-                }
-            },{
-                once: true});
-                socket.addEventListener('error', (event) => {
+            const connectingSocket=  socket
+            connectingSocket.addEventListener('open', () => {
+            resolve( connectingSocket)}, {once: true})
+
+            connectingSocket.addEventListener('error', () => {
                     reject(new Error('Không kết nối được với WebSocket'));
                 }, { once: true });
                 return;
             }
 
-            socket = new WebSocket(WS_URL);
-            socket.onopen=() => {
+            const ws = new WebSocket(WS_URL);
+            socket = ws
+            ws.onopen=() => {
                 console.log('Đã kết nối WebSocket');
-                resolve(socket);
-            };
-            socket.onmessage = (message) => {
+                resolve(ws);
+            }
+            ws.onmessage = (message) => {
                 try{
-                    const response = JSON.parse(message.data);
-                    const event = response.event;
-                    const request = pendingRequest[event];
+                    const response = JSON.parse(message.data) as WebSocketResponse
+                    const event = response.event
 
-                    if (request) {
-                        clearTimeout(request.timer);
-                        request.resolve(response);
-                        delete pendingRequest[event];
+                    if (event) {
+                        const request = pendingRequest[event]
+                        if(request){
+                            clearTimeout(request.timer);
+                            request.resolve(response);
+                            delete pendingRequest[event]
+                        }
                     }
                 }
                 catch {
                     console.log('Không thể đọc dữ liệu từ Server');
                 }
             };
-            socket.onerror () => {
+            ws.onerror = () => {
                 reject(new Error('Lỗi kết nối WebSocket'));
             };
 
-            socket.onclose=()=>{
+            ws.onclose=()=>{
                 console.log('WebSocket đã đóng kết nối');
                 socket = null;
                 Object.keys(pendingRequest).forEach((event) => {
-                    clearTimeout(pendingRequest[event].timer);
-                    pendingRequest[event].reject(new Error('Kết nối WebSicjet đã bị đóng'));
-                    delete pendingRequest[event];
+                    const request = pendingRequest[event]
+                        clearTimeout(pendingRequest[event].timer);
+                        request.reject(new Error('Kết nối WebSicjet đã bị đóng'));
+                        delete pendingRequest[event];
             });
         };
     });
 }
 
 export async function sendWebSocketEvent(
-    event: String,
+    event: string,
     data: object ={}
-){
+): Promise<WebSocketResponse>{
     const ws = await connectSocket();
-    return new Promise((resolve, reject) => {
+    return new Promise<WebSocketResponse>((resolve, reject) => {
         if (pendingRequest[event]){
             reject(new Error('Yêu cầu đang được xử lý'));
             return;
