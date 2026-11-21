@@ -9,7 +9,6 @@ function ProfilePage(){
     const user = useAppSelector((state) => state.auth.user)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-
     const [showEditForm, setShowEditForm] = useState(false)
     function handleLogout(){
         dispatch(logout())
