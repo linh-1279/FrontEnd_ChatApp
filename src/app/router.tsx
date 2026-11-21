@@ -1,5 +1,9 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
+
 import ChatPage from '../pages/ChatPage'
+import LoginPage from '../features/auth/pages/LoginPage'
+import RegisterPage from '../features/auth/pages/RegisterPage'
+import ProfilePage from '../features/auth/pages/ProfilePage'
 // Cấu hình các đường dẫn của ứng dụng
 const router = createBrowserRouter([
     {
@@ -8,18 +12,19 @@ const router = createBrowserRouter([
     },
     {
         path: '/login',
-        element: <div>Trang đăng nhập</div>
+        element: <LoginPage />
     },
     {
         path: '/register',
-        element: <div>Trang đăng ký</div>
+        element: <RegisterPage />
     },
     {
         path: '/chat',
-        element: <ChatPage />    },
+        element: <ChatPage />
+    },
     {
         path: '/profile',
-        element: <div>Hồ sơ cá nhân</div>
+        element: <ProfilePage />
     },
     {
         path: '*',
