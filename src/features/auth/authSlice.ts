@@ -4,21 +4,21 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 // Thông tin người dùng sau khi đăng nhập
 export type AuthUser = {
-    username:String
+    username: string
     email?: string
 }
 
 // Trạng thái của phần tài khoản
 type AuthState = {
     user: AuthUser | null
-    reLoginCode: String | null
+    reLoginCode: string | null
     isAuthenticated: boolean
     loading: boolean
     error: string | null
 }
-type LoginPayload ={
+type LoginPayload = {
     user: AuthUser
-    reLoginCode: String
+    reLoginCode: string
 }
 
 const initialState: AuthState = {
@@ -41,6 +41,16 @@ const authSlice = createSlice({
             state.error = null
         },
 
+        // Cập nhật thông tin hồ sơ
+        updateProfile: (state, action: PayloadAction<Partial<AuthUser>>) => {
+             if (state.user) {
+            state.user = {
+            ...state.user,
+            ...action.payload
+        }
+    }
+},
+
         // Đăng xuất khỏi ứng dụng
         logout: (state) => {
             state.user = null
@@ -51,6 +61,6 @@ const authSlice = createSlice({
     }
 })
 
-export const { login, logout } = authSlice.actions
+export const { login, logout, updateProfile } = authSlice.actions
 
 export default authSlice.reducer

@@ -1,44 +1,76 @@
-import { sendWebSocketEvent } from './socket';
+import { sendWebSocketEvent, type WebSocketResponse } from './socket'
 
-interface AuthResponse{
-    status:string
-    mess?: string
-    data?: {RE_LOGIN_CODE?: string}
+// Lấy thông báo lỗi từ Server
+function getErrorMessage(
+    response: WebSocketResponse,
+    defaultMessage: string
+): string {
+    if (typeof response.mes === 'string') {
+        return response.mes
+    }
+
+    return defaultMessage
 }
 
-export async function loginAccount(user: string, pass: String) {
+// Đăng nhập
+export async function loginAccount(
+    user: string,
+    pass: string
+): Promise<{ RE_LOGIN_CODE: string }> {
+
     const response = await sendWebSocketEvent('LOGIN', {
-        user: user,
-        pass: pass
-    }) as AuthResponse;
+        user,
+        pass
+    })
 
-    if(response.status !== 'success'){
-        throw new Error(response.mess || 'Tên đăng nhập hoặc mật khẩu không đúng');
+    if (response.status !== 'success') {
+        throw new Error(
+            getErrorMessage(response, 'Tên đăng nhập hoặc mật khẩu không đúng')
+        )
     }
-    
-    return response.data;
+
+    const data = response.data
+
+    if (
+        !data ||
+        typeof data !== 'object' ||
+        !('RE_LOGIN_CODE' in data) ||
+        typeof data.RE_LOGIN_CODE !== 'string'
+    ) {
+        throw new Error('Server không trả về mã đăng nhập hợp lệ')
+    }
+
+    return {
+        RE_LOGIN_CODE: data.RE_LOGIN_CODE
+    }
 }
 
-export async function registerAccount(user: string, pass: String) {
+// Đăng ký
+export async function registerAccount(
+    user: string,
+    pass: string
+): Promise<void> {
+
     const response = await sendWebSocketEvent('REGISTER', {
-        user: user,
-        pass: pass
-    }) as AuthResponse;
+        user,
+        pass
+    })
 
-    if(response.status !== 'success'){
-        throw new Error(response.mess || 'Đăng ký tài khoản thất bại');
+    if (response.status !== 'success') {
+        throw new Error(
+            getErrorMessage(response, 'Đăng ký tài khoản thất bại')
+        )
     }
-    
-    return response.data;
 }
 
-export async function logoutAccount(user: string, pass: String) {
-    const response = await sendWebSocketEvent('LOGOUT') as AuthResponse;
+// Đăng xuất
+export async function logoutAccount(): Promise<void> {
 
-    if(response.status !== 'success'){
-        throw new Error(response.mess || 'Đăng xuất thất bại');
+    const response = await sendWebSocketEvent('LOGOUT')
+
+    if (response.status !== 'success') {
+        throw new Error(
+            getErrorMessage(response, 'Đăng xuất thất bại')
+        )
     }
-    
-    return response.data;
 }
-

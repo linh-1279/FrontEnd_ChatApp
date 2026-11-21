@@ -1,4 +1,4 @@
-const WS_URL= 'ws://chat.longapp.io.vn/chat/chat';
+const WS_URL = 'wss://chat.longapp.io.vn/chat/chat';
 
 export type WebSocketResponse={
     event?: string
@@ -78,8 +78,8 @@ function connectSocket(): Promise<WebSocket> {
 
 export async function sendWebSocketEvent(
     event: string,
-    data: object ={}
-): Promise<WebSocketResponse>{
+    data?: object
+): Promise<WebSocketResponse> {
     const ws = await connectSocket();
     return new Promise<WebSocketResponse>((resolve, reject) => {
         if (pendingRequest[event]){
@@ -96,13 +96,21 @@ export async function sendWebSocketEvent(
             resolve,
             reject, timer
         };
-        const request = {
-            action: 'onchat',
-            data:{
-                event: event,
-                data: data
-            }
-        };
-        ws.send(JSON.stringify(request));
+        const request = data === undefined
+    ? {
+        action: 'onchat',
+        data: {
+            event: event
+        }
+    }
+    : {
+        action: 'onchat',
+        data: {
+            event: event,
+            data: data
+        }
+    };
+
+ws.send(JSON.stringify(request));
     });
 }
