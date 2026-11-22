@@ -6,6 +6,8 @@ import { registerAccount } from './../../../services/authService'
 
 import AuthLayout from './../../../components/AuthLayout'
 import PasswordInput from './../../../components/PasswordInput'
+import '../../auth/auth.css'
+
 
 function RegisterPage(){
         const [name, setName] = useState('')
@@ -31,8 +33,8 @@ function RegisterPage(){
             return;
         }
 
-        if(!/^[a-zA-z0-9]+$/.test(password)){
-            setError('Tên người dùng không được chứa ký tự đặc biệt, chỉ chứa chữ cái, số');
+        if(!/^[a-zA-z0-9_]+$/.test(password)){
+            setError('Tên người dùng chỉ được chứa chữ cái, số. và dấu gạch dưới');
             return;
         }
 
@@ -48,10 +50,7 @@ function RegisterPage(){
             setError('Mật khẩu phải có ít nhất 1 chữ in hoa');
             return;
         }
-        if(!/[^a-zA-z0-9]/.test(password)){
-            setError('Mật khẩu phải có ít nhất 1 ký tự đặc biệt');
-            return;
-        }
+    
         try{
             setLoading(true);
             await registerAccount(username.trim(), password);

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import MessageInput from './MessageInput'
 import type { ChatMessage } from '../messageTypes'
 import MessageList from './MessageList'
+import '../messages.css'
 
 type ChatWindowProps = {
     messages: ChatMessage[]

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import '../messages.css'
 
 type MessageInputProps = {
     onSend: (content: string) => void

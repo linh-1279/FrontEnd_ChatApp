@@ -1,8 +1,19 @@
-import { RouterProvider } from 'react-router-dom'
+import { Routes,Route, Navigate } from 'react-router-dom'
 import router from './app/router'
+import LoginPage from './features/auth/pages/LoginPage'
+import RegisterPage from './features/auth/pages/RegisterPage'
+import ChatPage from './pages/ChatPage'
 
 function App() {
-    return <RouterProvider router={router} />
+    return (
+    <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/chat" element={<ChatPage />} />
+        <Route path="*" element={<Navigate to= "/login" />} />
+
+    </Routes>
+    )
 }
 
 export default App

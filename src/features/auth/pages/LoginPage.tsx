@@ -9,6 +9,7 @@ import { loginAccount } from './../../../services/authService'
 
 import AuthLayout from './../../../components/AuthLayout'
 import PasswordInput from './../../../components/PasswordInput'
+import '../../auth/auth.css'
 
 function LoginPage() {
     const [username, setUsername] = useState('')
@@ -31,10 +32,11 @@ function LoginPage() {
 
         try{
             setLoading(true);
-            const data = await loginAccount(username.trim(), password);
+            setError('')
+            const response = await loginAccount(username.trim(), password);
             dispatch(login({ user: { username: username.trim() },
-            reLoginCode: data.RE_LOGIN_CODE}));
-            navigate('/profile');
+            reLoginCode: response.RE_LOGIN_CODE}))
+            navigate('/chat');
         }
     catch(err){
         if(err instanceof Error){

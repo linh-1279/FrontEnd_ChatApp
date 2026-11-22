@@ -4,6 +4,7 @@ import { logout } from './../../../features/auth/authSlice'
 import { useAppSelector, useAppDispatch } from './../../../app/hooks'
 
 import EditProfileForm from './../components/EditProfileForm'
+import '../../auth/auth.css'
 
 function ProfilePage(){
     const user = useAppSelector((state) => state.auth.user)
