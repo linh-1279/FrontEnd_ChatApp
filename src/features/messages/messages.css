@@ -250,3 +250,15 @@
 .chat-window__toolbar button {
     font-family: "Segoe UI Symbol", "Segoe UI", Arial, sans-serif;
 }
+
+/* Trạng thái tải và lỗi tin nhắn */
+.message-status {
+    margin: 12px auto;
+    color: #667085;
+    font-size: 13px;
+    text-align: center;
+}
+
+.message-status--error {
+    color: #dc2626;
+}

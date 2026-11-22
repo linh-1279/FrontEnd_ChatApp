@@ -19,6 +19,14 @@ function ChatPage() {
         (state) => state.messages.messages
     )
 
+    const loading = useAppSelector(
+    (state) => state.messages.loading
+    )
+
+    const error = useAppSelector(
+        (state) => state.messages.error
+    )
+
     // Nạp dữ liệu tin nhắn mẫu ban đầu
     useEffect(() => {
         dispatch(setMessages(mockPeopleMessages))
@@ -54,6 +62,8 @@ function ChatPage() {
                 currentUserName="long"
                 conversationName="Ti"
                 onSendMessage={handleSendMessage}
+                loading={loading}
+                error={error}
             />
         </main>
     )

@@ -3,7 +3,6 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 import type { ChatMessage } from './messageTypes'
 
-// Dữ liệu ban đầu của phần tin nhắn
 type MessageState = {
     messages: ChatMessage[]
     loading: boolean
@@ -20,18 +19,54 @@ const messageSlice = createSlice({
     name: 'messages',
     initialState,
     reducers: {
-        // Cập nhật danh sách tin nhắn
+        // Thay thế danh sách tin nhắn
         setMessages: (state, action: PayloadAction<ChatMessage[]>) => {
             state.messages = action.payload
+            state.loading = false
+            state.error = null
         },
 
-        // Thêm một tin nhắn mới
+        // Thêm tin nhắn mới, tránh thêm trùng ID
         addMessage: (state, action: PayloadAction<ChatMessage>) => {
-            state.messages.push(action.payload)
+            const exists = state.messages.some(
+                (message) => message.id === action.payload.id
+            )
+
+            if (!exists) {
+                state.messages.push(action.payload)
+            }
+        },
+
+        // Cập nhật trạng thái tải tin nhắn
+        setLoading: (state, action: PayloadAction<boolean>) => {
+            state.loading = action.payload
+
+            if (action.payload) {
+                state.error = null
+            }
+        },
+
+        // Cập nhật thông báo lỗi
+        setError: (state, action: PayloadAction<string | null>) => {
+            state.error = action.payload
+            state.loading = false
+        },
+
+        // Xóa danh sách khi chuyển sang hội thoại khác
+        clearMessages: (state) => {
+            state.messages = []
+            state.loading = false
+            state.error = null
         }
     }
 })
 
-export const { setMessages, addMessage } = messageSlice.actions
+export const {
+    setMessages,
+    addMessage,
+    setLoading,
+    setError,
+    clearMessages
+} = messageSlice.actions
 
 export default messageSlice.reducer
