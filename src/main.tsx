@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import store from './app/store'
 import App from './App'
 import './index.css'
+import { BrowserRouter } from 'react-router-dom'
 
 // Tìm phần tử root trong index.html
 const rootElement = document.getElementById('root')
@@ -18,7 +19,9 @@ if (!rootElement) {
 createRoot(rootElement).render(
     <StrictMode>
         <Provider store={store}>
+            <BrowserRouter>
             <App />
+            </BrowserRouter>
         </Provider>
     </StrictMode>
 )

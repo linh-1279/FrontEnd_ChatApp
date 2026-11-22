@@ -1,4 +1,5 @@
 import type { ChatMessage } from '../messageTypes'
+import '../messages.css'
 
 type MessageBubbleProps = {
     message: ChatMessage

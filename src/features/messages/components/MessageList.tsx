@@ -1,5 +1,6 @@
 import type { ChatMessage } from '../messageTypes'
 import MessageBubble from './MessageBubble'
+import '../messages.css'
 
 // Các dữ liệu cần nhận để hiển thị danh sách tin nhắn
 type MessageListProps = {
