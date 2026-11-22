@@ -2,19 +2,24 @@ import { useEffect, useRef } from 'react'
 import MessageInput from './MessageInput'
 import type { ChatMessage } from '../messageTypes'
 import MessageList from './MessageList'
+import MessageStatus from './MessageStatus'
 
 type ChatWindowProps = {
     messages: ChatMessage[]
     currentUserName: string
     conversationName: string
     onSendMessage: (content: string) => void
+    loading: boolean
+    error: string | null
 }
 
 function ChatWindow({
     messages,
     currentUserName,
     conversationName,
-    onSendMessage
+    onSendMessage,
+    loading,
+    error
 }: ChatWindowProps) {
         const historyRef = useRef<HTMLDivElement>(null)
 
@@ -62,6 +67,8 @@ function ChatWindow({
 
             {/* Khu vực hiển thị tin nhắn */}
             <div className="chat-window__history" ref={historyRef}>
+                <MessageStatus loading={loading} error={error} />
+
                 <MessageList
                     messages={messages}
                     currentUserName={currentUserName}
