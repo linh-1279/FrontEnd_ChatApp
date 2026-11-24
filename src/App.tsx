@@ -1,5 +1,4 @@
 import { Routes,Route, Navigate } from 'react-router-dom'
-import router from './app/router'
 import LoginPage from './features/auth/pages/LoginPage'
 import RegisterPage from './features/auth/pages/RegisterPage'
 import ChatPage from './pages/ChatPage'
